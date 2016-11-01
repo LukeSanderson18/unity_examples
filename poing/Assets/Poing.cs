@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Poing : MonoBehaviour {
   // The three objects in our game
+  // note that by putting "public" in front of your variables
+  // they become visible to the inspector.
   public GameObject Ball;
   public GameObject LeftBat;
   public GameObject RightBat;
@@ -44,6 +46,7 @@ public class Poing : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+    // Animate the bats. This happens in all states.
     Vector3 batUp = new Vector3(0, BatSpeed * DeltaT, 0);
 
     // Handle left bat
@@ -62,20 +65,27 @@ public class Poing : MonoBehaviour {
 
     switch (state) {
       case State.ServingLeft:
+        // In this state we are serving
+        // Stick the ball to the left bat
         Ball.transform.position = LeftBat.transform.position + new Vector3(1, 0, 0);
         if (Input.GetKey("d")) {
           state = State.Playing;
           BallVel = new Vector3(BallSpeed, BallSpeed, 0);
         }
         break;
+
       case State.ServingRight:
+        // In this state we are serving
+        // Stick the ball to the right bat
         Ball.transform.position = RightBat.transform.position + new Vector3(-1, 0, 0);
         if (Input.GetKey("left")) {
           state = State.Playing;
           BallVel = new Vector3(-BallSpeed, BallSpeed, 0);
         }
         break;
+
       case State.Playing:
+        // In this state we are playing and must animate the ball.
         Transform t = Ball.transform;
 
         // move the ball
@@ -111,9 +121,10 @@ public class Poing : MonoBehaviour {
           RightText.text = "" + RightScore;
           if (RightScore == 10) state = State.GameOver;
         }
-
         break;
+
       case State.GameOver:
+        // The game is over, do nothing.
         break;
     }
 	}
